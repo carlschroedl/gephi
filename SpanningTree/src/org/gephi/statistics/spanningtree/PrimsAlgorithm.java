@@ -14,9 +14,9 @@ import org.openide.util.lookup.ServiceProvider;
  * @author cschroedl
  */
 @ServiceProvider(service = SpanningTreeAlgorithm.class)
-public class KruskalsAlgorithm implements SpanningTreeAlgorithm{
+public class PrimsAlgorithm implements SpanningTreeAlgorithm{
 
-    private static final String name = "Kruskal's Algorithm";
+    private static final String name = "Prim's Algorithm";
     
     @Override
     public void execute(Graph graph, AttributeModel attributeModel) {
@@ -32,5 +32,4 @@ public class KruskalsAlgorithm implements SpanningTreeAlgorithm{
     public String toString(){
         return name;
     }
-    
 }

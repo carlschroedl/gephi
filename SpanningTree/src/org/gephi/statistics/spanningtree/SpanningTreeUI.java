@@ -20,10 +20,14 @@ public class SpanningTreeUI implements StatisticsUI {
 
     private SpanningTreePanel panel;
     private SpanningTree myMetric;
-
+    
+    public void setSpanningTreeAlgorithm(SpanningTreeAlgorithm alg){
+        myMetric.setStAlgorithm(alg);
+    }
+    
     @Override
     public JPanel getSettingsPanel() {
-        panel = new SpanningTreePanel();
+        panel = new SpanningTreePanel(this);
         return panel; //null if no panel exists
     }
 
@@ -75,7 +79,7 @@ public class SpanningTreeUI implements StatisticsUI {
         //The position control the order the metric front-end are displayed. 
         //Returns a value between 1 and 1000, that indicates the position. 
         //Less means upper.
-        return 800;
+        return 10;
     }
 
 }

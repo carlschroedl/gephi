@@ -15,35 +15,41 @@ import org.openide.util.Lookup;
 /**
  *
  * See http://wiki.gephi.org/index.php/HowTo_write_a_metric#Create_StatisticsUI
- * @author Your Name <your.name@your.company.com>
+ * @author Carl Schroedl <carlschroedl@gmail.com>
  */
 public class SpanningTreePanel extends javax.swing.JPanel {
-
+    
+    private static final String NOT_FOUND = "No Algorithms Found";
+    
+    //stui is a link in the chain of communication between front and back end
+    // SpanningTreePanel<-->SpanningTreeUI<-->SpanningTree
+    private SpanningTreeUI stui;
+    
     /** Creates new form SpanningTreePanel */
-    public SpanningTreePanel() {
+
+    public SpanningTreePanel(SpanningTreeUI stui) {
+        
+        this.stui=stui;
+        
         initComponents();
-        /*Vector<? extends SpanningTreeAlgorithm> SpanningTreeAlgorithms = 
-                (Vector)Lookup.getDefault().lookupAll(SpanningTreeAlgorithm.class);
-        */
-        /* REAL:
-        Collection<? extends SpanningTreeAlgorithm> SpanningTreeAlgorithms = 
+        
+        //Collect all available spanningTreeAlgorithms
+        Collection<? extends SpanningTreeAlgorithm> spanningTreeAlgorithms = 
                 Lookup.getDefault().lookupAll(SpanningTreeAlgorithm.class);
-        
-        ComboBoxModel comboModel = new DefaultComboBoxModel((Vector)SpanningTreeAlgorithms);
-        */
-        
-        //Test:
-        Vector<String> test = new Vector<String>();
-        test.add("1");
-        test.add("2");
-        test.add("3");
-        test.add("4");
-        ComboBoxModel comboModel = new DefaultComboBoxModel(test);
-        
-        
+       
+        Vector options;
+        if (spanningTreeAlgorithms.isEmpty()){ 
+            options = new Vector();
+            options.add(NOT_FOUND);
+        }
+        else{
+            options = new Vector(spanningTreeAlgorithms);
+        }
+        ComboBoxModel comboModel = new DefaultComboBoxModel(options);
         algorithmComboBox.setModel(comboModel);
         
-                
+        //only enable if options are not empty
+        algorithmComboBox.setEnabled(!spanningTreeAlgorithms.isEmpty());              
     }
 
     /** Add here setters and getters for all properties users can edit. */
@@ -88,7 +94,19 @@ public class SpanningTreePanel extends javax.swing.JPanel {
         directedButtonGroup.add(directedRadioButton);
         directedRadioButton.setText(org.openide.util.NbBundle.getMessage(SpanningTreePanel.class, "SpanningTreePanel.directedRadioButton.text")); // NOI18N
 
-        algorithmComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        algorithmComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Searching..." }));
+        algorithmComboBox.setActionCommand(org.openide.util.NbBundle.getMessage(SpanningTreePanel.class, "SpanningTreePanel.algorithmComboBox.actionCommand")); // NOI18N
+        algorithmComboBox.setEnabled(false);
+        algorithmComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                algorithmComboBoxItemStateChanged(evt);
+            }
+        });
+        algorithmComboBox.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                algorithmComboBoxPropertyChange(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -100,11 +118,11 @@ public class SpanningTreePanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(undirectedRadioButton)
                     .addComponent(directedRadioButton))
-                .addContainerGap(201, Short.MAX_VALUE))
+                .addContainerGap(371, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(algorithmComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(390, Short.MAX_VALUE))
+                .addContainerGap(362, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,6 +137,17 @@ public class SpanningTreePanel extends javax.swing.JPanel {
                 .addGap(21, 21, 21))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void algorithmComboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_algorithmComboBoxPropertyChange
+
+    }//GEN-LAST:event_algorithmComboBoxPropertyChange
+
+    private void algorithmComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_algorithmComboBoxItemStateChanged
+        Object selection = algorithmComboBox.getSelectedItem();
+        if(selection instanceof SpanningTreeAlgorithm){
+            stui.setSpanningTreeAlgorithm((SpanningTreeAlgorithm)selection);
+        }
+    }//GEN-LAST:event_algorithmComboBoxItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

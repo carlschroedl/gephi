@@ -29,18 +29,21 @@ public class SpanningTree implements Statistics, LongTask {
 
     private boolean cancel = false;
     private ProgressTicket progressTicket;
-
+    private SpanningTreeAlgorithm stAlgorithm;
+    
     private boolean directed;
 
     @Override
+    //for the UI only, selects the currently visible graph
     public void execute(GraphModel graphModel, AttributeModel attributeModel) {
-        System.out.println("BOO!");
-        Graph graph = graphModel.getGraphVisible();
-        graph.writeLock();
+        this.execute(graphModel.getGraphVisible(), attributeModel);
+    }
+    //a more general version of execute()
+    public void execute(Graph graph, AttributeModel attributeModel){
         
         //Your algorithm
         
-        
+        graph.writeLock();
         
         //See http://wiki.gephi.org/index.php/HowTo_write_a_metric#Implementation_help
         
@@ -76,7 +79,6 @@ public class SpanningTree implements Statistics, LongTask {
             graph.writeUnlock();
         }
     }
-
     /** Only useful if the algorithm takes graph type into account. */
 
     public boolean isDirected() {
@@ -106,5 +108,20 @@ public class SpanningTree implements Statistics, LongTask {
     @Override
     public void setProgressTicket(ProgressTicket progressTicket) {
         this.progressTicket = progressTicket;
+    }
+
+    /**
+     * @return the stAlgorithm
+     */
+    public SpanningTreeAlgorithm getStAlgorithm() {
+        return stAlgorithm;
+    }
+
+    /**
+     * @param stAlgorithm the stAlgorithm to set
+     */
+    public void setStAlgorithm(SpanningTreeAlgorithm stAlgorithm) {
+        this.stAlgorithm = stAlgorithm;
+        System.out.println(stAlgorithm.toString());
     }
 }
