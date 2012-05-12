@@ -12,8 +12,8 @@ import org.openide.util.lookup.ServiceProvider;
 /**
  *
  * See http://wiki.gephi.org/index.php/HowTo_write_a_metric#Create_StatisticsUI
- * 
- * @author Your Name <your.name@your.company.com>
+ *
+ * @author Carl Schroedl <carlschroedl@gmail.com>
  */
 @ServiceProvider(service = StatisticsUI.class)
 public class SpanningTreeUI implements StatisticsUI {

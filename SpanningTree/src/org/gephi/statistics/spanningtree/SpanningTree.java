@@ -22,8 +22,8 @@ import org.openide.util.Lookup;
 /**
  *
  * See http://wiki.gephi.org/index.php/HowTo_write_a_metric#Create_Statistics
- * 
- * @author Your Name <your.name@your.company.com>
+ *
+ * @author Carl Schroedl <carlschroedl@gmail.com>
  */
 public class SpanningTree implements Statistics, LongTask {
 

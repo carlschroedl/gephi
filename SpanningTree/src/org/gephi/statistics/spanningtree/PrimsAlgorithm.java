@@ -11,10 +11,10 @@ import org.openide.util.lookup.ServiceProvider;
 
 /**
  *
- * @author cschroedl
+ * @author Carl Schroedl <carlschroedl@gmail.com>
  */
 @ServiceProvider(service = SpanningTreeAlgorithm.class)
-public class PrimsAlgorithm implements SpanningTreeAlgorithm{
+public class PrimsAlgorithm extends SpanningTreeAlgorithm{
 
     private static final String name = "Prim's Algorithm";
     
@@ -27,9 +27,10 @@ public class PrimsAlgorithm implements SpanningTreeAlgorithm{
     public JPanel getOptions() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
     @Override
-    public String toString(){
-        return name;
+    public String getName() {
+       return name;
     }
+    
 }

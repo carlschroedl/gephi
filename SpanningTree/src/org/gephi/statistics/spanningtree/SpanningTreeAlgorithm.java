@@ -6,13 +6,21 @@ import org.gephi.graph.api.Graph;
 
 /**
  *
- * @author carlschroedl@gmail.com
+ * @author Carl Schroedl <carlschroedl@gmail.com>
  */
-public interface SpanningTreeAlgorithm {
-    public void execute(Graph graph, AttributeModel attributeModel);
-    public JPanel getOptions();
+public abstract class SpanningTreeAlgorithm {
+              
+    public abstract void execute(Graph graph, AttributeModel attributeModel);
+    public abstract JPanel getOptions();
+
+    
+    //These 2 methods return the name shown to the user in the interface:
+    public abstract String getName();
     
     @Override
-    //Returns the name shown to the user in the drop-down interface
-    public String toString();
+    public final String toString(){
+        return this.getName();
+    }
+    
+    
 }

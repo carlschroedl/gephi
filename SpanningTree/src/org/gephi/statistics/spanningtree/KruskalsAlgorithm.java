@@ -11,10 +11,10 @@ import org.openide.util.lookup.ServiceProvider;
 
 /**
  *
- * @author cschroedl
+ * @author Carl Schroedl <carlschroedl@gmail.com>
  */
 @ServiceProvider(service = SpanningTreeAlgorithm.class)
-public class KruskalsAlgorithm implements SpanningTreeAlgorithm{
+public class KruskalsAlgorithm extends SpanningTreeAlgorithm{
 
     private static final String name = "Kruskal's Algorithm";
     
@@ -29,7 +29,7 @@ public class KruskalsAlgorithm implements SpanningTreeAlgorithm{
     }
     
     @Override
-    public String toString(){
+    public String getName() {
         return name;
     }
     
