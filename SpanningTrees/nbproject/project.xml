@@ -5,7 +5,7 @@
         <data xmlns="http://www.netbeans.org/ns/nb-module-project/3">
             <!--<code-name-base>org.gephi.statistics.template</code-name-base>-->
             <code-name-base>org.gephi.statistics.spanningtrees</code-name-base>
-            <suite-component/>
+            <standalone/>
             <module-dependencies>
                 <dependency>
                     <code-name-base>org.gephi.data.attributes.api</code-name-base>

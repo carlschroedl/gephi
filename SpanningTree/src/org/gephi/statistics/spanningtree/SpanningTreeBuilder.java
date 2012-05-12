@@ -19,7 +19,7 @@ public class SpanningTreeBuilder implements StatisticsBuilder {
 
     @Override
     public String getName() {
-        return "Spanning Trees";
+        return "Spanning Tree";
     }
 
     @Override

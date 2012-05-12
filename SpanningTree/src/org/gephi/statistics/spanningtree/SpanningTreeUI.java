@@ -16,14 +16,14 @@ import org.openide.util.lookup.ServiceProvider;
  * @author Your Name <your.name@your.company.com>
  */
 @ServiceProvider(service = StatisticsUI.class)
-public class SpanningTreesUI implements StatisticsUI {
+public class SpanningTreeUI implements StatisticsUI {
 
-    private SpanningTreesPanel panel;
+    private SpanningTreePanel panel;
     private SpanningTree myMetric;
 
     @Override
     public JPanel getSettingsPanel() {
-        panel = new SpanningTreesPanel();
+        panel = new SpanningTreePanel();
         return panel; //null if no panel exists
     }
 
@@ -57,7 +57,7 @@ public class SpanningTreesUI implements StatisticsUI {
 
     @Override
     public String getDisplayName() {
-        return "Spanning Trees";
+        return "Spanning Tree";
     }
 
     @Override

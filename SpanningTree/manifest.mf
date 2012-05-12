@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-OpenIDE-Module: org.gephi.statistics.spanningtrees
-OpenIDE-Module-Localizing-Bundle: org/gephi/statistics/spanningtrees/Bundle.properties
+OpenIDE-Module: org.gephi.statistics.spanningtree
+OpenIDE-Module-Localizing-Bundle: org/gephi/statistics/spanningtree/Bundle.properties
 OpenIDE-Module-Specification-Version: 1.0
 

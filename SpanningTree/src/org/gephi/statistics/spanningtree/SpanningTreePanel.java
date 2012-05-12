@@ -6,16 +6,44 @@
 
 package org.gephi.statistics.spanningtree;
 
+import java.util.Collection;
+import java.util.Vector;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import org.openide.util.Lookup;
+
 /**
  *
  * See http://wiki.gephi.org/index.php/HowTo_write_a_metric#Create_StatisticsUI
  * @author Your Name <your.name@your.company.com>
  */
-public class SpanningTreesPanel extends javax.swing.JPanel {
+public class SpanningTreePanel extends javax.swing.JPanel {
 
-    /** Creates new form SpanningTreesPanel */
-    public SpanningTreesPanel() {
+    /** Creates new form SpanningTreePanel */
+    public SpanningTreePanel() {
         initComponents();
+        /*Vector<? extends SpanningTreeAlgorithm> SpanningTreeAlgorithms = 
+                (Vector)Lookup.getDefault().lookupAll(SpanningTreeAlgorithm.class);
+        */
+        /* REAL:
+        Collection<? extends SpanningTreeAlgorithm> SpanningTreeAlgorithms = 
+                Lookup.getDefault().lookupAll(SpanningTreeAlgorithm.class);
+        
+        ComboBoxModel comboModel = new DefaultComboBoxModel((Vector)SpanningTreeAlgorithms);
+        */
+        
+        //Test:
+        Vector<String> test = new Vector<String>();
+        test.add("1");
+        test.add("2");
+        test.add("3");
+        test.add("4");
+        ComboBoxModel comboModel = new DefaultComboBoxModel(test);
+        
+        
+        algorithmComboBox.setModel(comboModel);
+        
+                
     }
 
     /** Add here setters and getters for all properties users can edit. */
@@ -47,17 +75,20 @@ public class SpanningTreesPanel extends javax.swing.JPanel {
         header = new org.jdesktop.swingx.JXHeader();
         undirectedRadioButton = new javax.swing.JRadioButton();
         directedRadioButton = new javax.swing.JRadioButton();
+        algorithmComboBox = new javax.swing.JComboBox();
 
         setPreferredSize(new java.awt.Dimension(456, 218));
 
-        header.setDescription(org.openide.util.NbBundle.getMessage(SpanningTreesPanel.class, "SpanningTreesPanel.header.description")); // NOI18N
-        header.setTitle(org.openide.util.NbBundle.getMessage(SpanningTreesPanel.class, "SpanningTreesPanel.header.title")); // NOI18N
+        header.setDescription(org.openide.util.NbBundle.getMessage(SpanningTreePanel.class, "SpanningTreePanel.header.description")); // NOI18N
+        header.setTitle(org.openide.util.NbBundle.getMessage(SpanningTreePanel.class, "SpanningTreePanel.header.title")); // NOI18N
 
         directedButtonGroup.add(undirectedRadioButton);
-        undirectedRadioButton.setText(org.openide.util.NbBundle.getMessage(SpanningTreesPanel.class, "SpanningTreesPanel.undirectedRadioButton.text")); // NOI18N
+        undirectedRadioButton.setText(org.openide.util.NbBundle.getMessage(SpanningTreePanel.class, "SpanningTreePanel.undirectedRadioButton.text")); // NOI18N
 
         directedButtonGroup.add(directedRadioButton);
-        directedRadioButton.setText(org.openide.util.NbBundle.getMessage(SpanningTreesPanel.class, "SpanningTreesPanel.directedRadioButton.text")); // NOI18N
+        directedRadioButton.setText(org.openide.util.NbBundle.getMessage(SpanningTreePanel.class, "SpanningTreePanel.directedRadioButton.text")); // NOI18N
+
+        algorithmComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -68,10 +99,12 @@ public class SpanningTreesPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(undirectedRadioButton)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(directedRadioButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(358, Short.MAX_VALUE))
+                    .addComponent(directedRadioButton))
+                .addContainerGap(201, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(algorithmComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(390, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -81,12 +114,15 @@ public class SpanningTreesPanel extends javax.swing.JPanel {
                 .addComponent(directedRadioButton)
                 .addGap(7, 7, 7)
                 .addComponent(undirectedRadioButton)
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addComponent(algorithmComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox algorithmComboBox;
     private javax.swing.ButtonGroup directedButtonGroup;
     protected javax.swing.JRadioButton directedRadioButton;
     private org.jdesktop.swingx.JXHeader header;

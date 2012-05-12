@@ -3,8 +3,7 @@
     <type>org.netbeans.modules.apisupport.project</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/nb-module-project/3">
-            <!--<code-name-base>org.gephi.statistics.template</code-name-base>-->
-            <code-name-base>org.gephi.statistics.spanningtrees</code-name-base>
+            <code-name-base>org.gephi.statistics.spanningtree</code-name-base>
             <suite-component/>
             <module-dependencies>
                 <dependency>
@@ -64,6 +63,22 @@
                     </run-dependency>
                 </dependency>
                 <dependency>
+                    <code-name-base>org.openide.awt</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <specification-version>7.39.1</specification-version>
+                    </run-dependency>
+                </dependency>
+                <dependency>
+                    <code-name-base>org.openide.dialogs</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <specification-version>7.23.1</specification-version>
+                    </run-dependency>
+                </dependency>
+                <dependency>
                     <code-name-base>org.openide.util</code-name-base>
                     <build-prerequisite/>
                     <compile-dependency/>
@@ -81,7 +96,7 @@
                 </dependency>
             </module-dependencies>
             <public-packages>
-                <package>org.gephi.statistics.spanningtrees</package>
+                <package>org.gephi.statistics.spanningtree</package>
             </public-packages>
         </data>
     </configuration>
