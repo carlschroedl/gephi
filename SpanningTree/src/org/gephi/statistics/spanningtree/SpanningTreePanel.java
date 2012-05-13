@@ -38,7 +38,8 @@ public class SpanningTreePanel extends javax.swing.JPanel {
                 Lookup.getDefault().lookupAll(SpanningTreeAlgorithm.class);
        
         Vector options;
-        if (spanningTreeAlgorithms.isEmpty()){ 
+        boolean empty = spanningTreeAlgorithms.isEmpty();
+        if (empty){ 
             options = new Vector();
             options.add(NOT_FOUND);
         }
@@ -50,7 +51,7 @@ public class SpanningTreePanel extends javax.swing.JPanel {
         propogateAlgorithmChange();
         
         //only enable if options are not empty
-        algorithmComboBox.setEnabled(!spanningTreeAlgorithms.isEmpty());              
+        algorithmComboBox.setEnabled(!empty);              
         
     }
 
@@ -143,24 +144,15 @@ public class SpanningTreePanel extends javax.swing.JPanel {
     private void algorithmComboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_algorithmComboBoxPropertyChange
 
     }//GEN-LAST:event_algorithmComboBoxPropertyChange
+    //communicate the gui selection to the SpanningTreeUI object
     private void propogateAlgorithmChange(){
-        //*
+
         Object selection = algorithmComboBox.getSelectedItem();
         
         if(selection instanceof SpanningTreeAlgorithm){
             stui.setSpanningTreeAlgorithm((SpanningTreeAlgorithm)selection);
         }
-         //*/
-        
-        /*
-        Object selection = algorithmComboBox.getSelectedItem();
-        
-        if(selection instanceof SpanningTreeAlgorithm){
-            SpanningTreeBuilder.setSpanningTreeAlgorithm(
-                                    (SpanningTreeAlgorithm)selection
-                                );
-        }
-         //*/
+
     }
     private void algorithmComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_algorithmComboBoxItemStateChanged
         propogateAlgorithmChange();
