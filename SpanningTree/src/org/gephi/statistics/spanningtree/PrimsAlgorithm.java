@@ -7,6 +7,8 @@ package org.gephi.statistics.spanningtree;
 import javax.swing.JPanel;
 import org.gephi.data.attributes.api.AttributeModel;
 import org.gephi.graph.api.Graph;
+import org.gephi.graph.api.GraphModel;
+import org.gephi.utils.progress.ProgressTicket;
 import org.openide.util.lookup.ServiceProvider;
 
 /**
@@ -31,6 +33,26 @@ public class PrimsAlgorithm extends SpanningTreeAlgorithm{
     @Override
     public String getName() {
        return name;
+    }
+
+    @Override
+    public boolean cancel() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void setProgressTicket(ProgressTicket progressTicket) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void execute(GraphModel graphModel, AttributeModel attributeModel) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public String getReport() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

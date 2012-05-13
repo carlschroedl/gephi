@@ -47,9 +47,11 @@ public class SpanningTreePanel extends javax.swing.JPanel {
         }
         ComboBoxModel comboModel = new DefaultComboBoxModel(options);
         algorithmComboBox.setModel(comboModel);
+        propogateAlgorithmChange();
         
         //only enable if options are not empty
         algorithmComboBox.setEnabled(!spanningTreeAlgorithms.isEmpty());              
+        
     }
 
     /** Add here setters and getters for all properties users can edit. */
@@ -141,12 +143,27 @@ public class SpanningTreePanel extends javax.swing.JPanel {
     private void algorithmComboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_algorithmComboBoxPropertyChange
 
     }//GEN-LAST:event_algorithmComboBoxPropertyChange
-
-    private void algorithmComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_algorithmComboBoxItemStateChanged
+    private void propogateAlgorithmChange(){
+        //*
         Object selection = algorithmComboBox.getSelectedItem();
+        
         if(selection instanceof SpanningTreeAlgorithm){
             stui.setSpanningTreeAlgorithm((SpanningTreeAlgorithm)selection);
         }
+         //*/
+        
+        /*
+        Object selection = algorithmComboBox.getSelectedItem();
+        
+        if(selection instanceof SpanningTreeAlgorithm){
+            SpanningTreeBuilder.setSpanningTreeAlgorithm(
+                                    (SpanningTreeAlgorithm)selection
+                                );
+        }
+         //*/
+    }
+    private void algorithmComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_algorithmComboBoxItemStateChanged
+        propogateAlgorithmChange();
     }//GEN-LAST:event_algorithmComboBoxItemStateChanged
 
 

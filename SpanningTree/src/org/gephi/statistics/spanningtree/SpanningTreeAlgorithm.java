@@ -3,12 +3,25 @@ package org.gephi.statistics.spanningtree;
 import javax.swing.JPanel;
 import org.gephi.data.attributes.api.AttributeModel;
 import org.gephi.graph.api.Graph;
+import org.gephi.statistics.spi.Statistics;
+import org.gephi.utils.longtask.spi.LongTask;
 
 /**
  *
  * @author Carl Schroedl <carlschroedl@gmail.com>
  */
-public abstract class SpanningTreeAlgorithm {
+
+/*
+ * Implementations must provide the following @ServiceProvider Annotation:
+ *
+ * @ServiceProvider(service = SpanningTreeAlgorithm.class) 
+ * 
+ * Failure to add this annotation will prevent the implementation from being
+ * detected and used at runtime. In essence, the UI will not be aware of the 
+ * algorithm.
+ */
+
+public abstract class SpanningTreeAlgorithm implements LongTask, Statistics{
               
     public abstract void execute(Graph graph, AttributeModel attributeModel);
     public abstract JPanel getOptions();

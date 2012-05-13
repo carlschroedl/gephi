@@ -20,9 +20,15 @@ public class SpanningTreeUI implements StatisticsUI {
 
     private SpanningTreePanel panel;
     private SpanningTree myMetric;
-    
+    private SpanningTreeAlgorithm spanningTreeAlgorithm;
+/*    
+    public SpanningTreeUI(){
+        this.myMetric = new SpanningTree();
+    }
+  */  
     public void setSpanningTreeAlgorithm(SpanningTreeAlgorithm alg){
-        myMetric.setStAlgorithm(alg);
+        this.spanningTreeAlgorithm = alg;
+        //myMetric.setStAlgorithm(alg);
     }
     
     @Override
@@ -33,7 +39,9 @@ public class SpanningTreeUI implements StatisticsUI {
 
     @Override
     public void setup(Statistics statistics) {
-        this.myMetric = (SpanningTree) statistics;
+        
+            this.myMetric = (SpanningTree) statistics;
+            this.myMetric.setStAlgorithm(this.spanningTreeAlgorithm);
         if (panel != null) {
             panel.setDirected(myMetric.isDirected()); //Remove it if not useful
         }
@@ -79,7 +87,7 @@ public class SpanningTreeUI implements StatisticsUI {
         //The position control the order the metric front-end are displayed. 
         //Returns a value between 1 and 1000, that indicates the position. 
         //Less means upper.
-        return 10;
+        return 1;
     }
 
 }

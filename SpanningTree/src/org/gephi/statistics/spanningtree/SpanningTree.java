@@ -32,9 +32,13 @@ public class SpanningTree implements Statistics, LongTask {
     private SpanningTreeAlgorithm stAlgorithm;
     
     private boolean directed;
-
+    
+    public SpanningTree(SpanningTreeAlgorithm stAlgorithm){
+        this.stAlgorithm = stAlgorithm;
+    }
+    
     @Override
-    //for the UI only, selects the currently visible graph
+    //wrapper method for the UI only, selects the currently visible graph
     public void execute(GraphModel graphModel, AttributeModel attributeModel) {
         this.execute(graphModel.getGraphVisible(), attributeModel);
     }
@@ -42,42 +46,13 @@ public class SpanningTree implements Statistics, LongTask {
     public void execute(Graph graph, AttributeModel attributeModel){
         
         //Your algorithm
-        
-        graph.writeLock();
-        
-        //See http://wiki.gephi.org/index.php/HowTo_write_a_metric#Implementation_help
-        
-        AttributeTable nodeTable = attributeModel.getNodeTable();
-        AttributeColumn inCol = nodeTable.getColumn("spanningtree");
-
-        if (inCol == null) {
-            inCol = nodeTable.addColumn("spanningtree", "Spanning Tree", AttributeType.INT, AttributeOrigin.COMPUTED, 0);
-
+        if( null == stAlgorithm){
+            throw new NullPointerException("No Spanning Tree Algorithm was set.");
+        }
+        else{
+            stAlgorithm.execute(graph, attributeModel);
         }
         
-        
-        try {
-            Progress.start(progressTicket, graph.getNodeCount());
-            boolean one = false;
-            for (Node n : graph.getNodes()) {
-                //do something
-                if(one){
-                    n.getAttributes().setValue("spanningtree", 1);
-                    
-                }
-                one = !one;
-                Progress.progress(progressTicket);
-                if (cancel) {
-                    break;
-                }
-            }
-                        
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            //Unlock graph
-            graph.writeUnlock();
-        }
     }
     /** Only useful if the algorithm takes graph type into account. */
 
@@ -122,6 +97,5 @@ public class SpanningTree implements Statistics, LongTask {
      */
     public void setStAlgorithm(SpanningTreeAlgorithm stAlgorithm) {
         this.stAlgorithm = stAlgorithm;
-        System.out.println(stAlgorithm.toString());
     }
 }
