@@ -5,14 +5,18 @@
 package org.gephi.statistics.spanningtree;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.PriorityQueue;
 import javax.swing.JPanel;
 import org.gephi.data.attributes.api.AttributeColumn;
 import org.gephi.data.attributes.api.AttributeModel;
 import org.gephi.data.attributes.api.AttributeOrigin;
 import org.gephi.data.attributes.api.AttributeTable;
 import org.gephi.data.attributes.api.AttributeType;
+import org.gephi.graph.api.Edge;
 import org.gephi.graph.api.Graph;
 import org.gephi.graph.api.GraphModel;
+import org.gephi.graph.api.Model;
 import org.gephi.graph.api.Node;
 import org.gephi.utils.progress.Progress;
 import org.gephi.utils.progress.ProgressTicket;
@@ -28,39 +32,91 @@ public class KruskalsAlgorithm extends SpanningTreeAlgorithm {
     private static final String name = "Kruskal's Algorithm";
     private ProgressTicket progressTicket;
     private boolean cancel;
-
+    private Graph graph;
+    private HashMap<Integer, KNode> kNodes;
+    private double STweight;    //spanning tree weight
+    private int edgesInST;      //number of edges in spanning tree
+    private static final String ST_COL_ID = "spanningtree";     //not displayed to user
+    private static final String ST_COL_NAME = "Spanning Tree";  //displayed to user
+    
     //<required methods>
     @Override
     public void execute(Graph graph, AttributeModel attributeModel) {
-        //throw new UnsupportedOperationException("Not supported yet.");
-        graph.writeLock();
-
         //See http://wiki.gephi.org/index.php/HowTo_write_a_metric#Implementation_help
-
+        this.graph=graph;
+        graph.writeLock();
+        kNodes = new HashMap<Integer, KNode>();
+        PriorityQueue<KEdge> edgeQ = new PriorityQueue();
+        this.STweight=0;
+        this.edgesInST=0;
+        
+        //<new attributes for the spanning tree>
+        
+        //<nodes>
         AttributeTable nodeTable = attributeModel.getNodeTable();
-        AttributeColumn inCol = nodeTable.getColumn("spanningtree");
+        AttributeColumn stNodeCol = nodeTable.getColumn("spanningtree");
 
-        if (inCol == null) {
-            inCol = nodeTable.addColumn("spanningtree", "Spanning Tree", AttributeType.INT, AttributeOrigin.COMPUTED, 0);
+        if (stNodeCol == null) {
+            stNodeCol = nodeTable.addColumn(ST_COL_ID, "ST_COL_NAME", AttributeType.INT, AttributeOrigin.COMPUTED, 0);
 
         }
+        //</nodes>
+        //<edges>
+        AttributeTable edgeTable = attributeModel.getEdgeTable();
+        AttributeColumn stEdgeCol = edgeTable.getColumn("spanningtree");
 
-
+        if (stEdgeCol == null) {
+            stEdgeCol = edgeTable.addColumn(ST_COL_ID, "ST_COL_NAME", AttributeType.INT, AttributeOrigin.COMPUTED, 0);
+        }        
+        //</edges>
+        //</new attributes for the spanning tree>
+        
         try {
-            Progress.start(progressTicket, graph.getNodeCount());
-            boolean one = false;
-            for (Node n : graph.getNodes()) {
-                //do something
-                if (one) {
-                    n.getAttributes().setValue("spanningtree", 1);
-
+            Progress.start(progressTicket, graph.getEdgeCount());
+            
+            //Convert all edges to the Comparable KEdge, then add to PriorityQueue
+            for (Edge e : graph.getEdges()) {
+                   edgeQ.add(new KEdge(e));
+            }//endforeach
+            
+            int finishSize = graph.getNodeCount()-1;
+            KEdge tempKEdge; //edge popped off the PriorityQueue
+            
+            while(edgesInST < finishSize){	
+                tempKEdge=edgeQ.remove();
+                if(	tempKEdge.getSrcNode().getDjsPointer().find()
+				!=
+				tempKEdge.getDestNode().getDjsPointer().find()
+				){
+				//and yes, it IS ok to use != instead of !blah.equals()
+                    
+                    //change edge's Spanning Tree Attribute to non-default value
+                    tempKEdge.edge.getAttributes().setValue(ST_COL_ID, 1);
+                    
+                    //change nodes' Spanning Tree Attribute to non-default value
+                    tempKEdge.destNode.node.getAttributes().setValue(ST_COL_ID, 1);
+                    tempKEdge.srcNode.node.getAttributes().setValue(ST_COL_ID, 1);
+                    
+                    ++edgesInST;
+                    this.STweight+= tempKEdge.weight;
+                    
+                    //todo: Unionize
+                    Unionizer unionizer = new Unionizer();
+                    unionizer.union(
+                                    tempKEdge.getSrcNode().getDjsPointer(),
+                                    tempKEdge.getDestNode().getDjsPointer()
+                            );
                 }
-                one = !one;
-                Progress.progress(progressTicket);
+                
+                
+                Progress.progress(progressTicket, edgesInST);
                 if (cancel) {
+                    //remove the intermediate columns
+                    attributeModel.getNodeTable().removeColumn(stNodeCol);
+                    attributeModel.getEdgeTable().removeColumn(stEdgeCol);
                     break;
                 }
-            }
+            }//end while
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,24 +138,29 @@ public class KruskalsAlgorithm extends SpanningTreeAlgorithm {
 
     @Override
     public boolean cancel() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.cancel = true;
+        return true;
     }
 
     @Override
     public void setProgressTicket(ProgressTicket progressTicket) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.progressTicket=progressTicket;
     }
 
     @Override
     public void execute(GraphModel graphModel, AttributeModel attributeModel) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported yet, "
+                + "needs a Graph, not a GraphModel");
     }
 
     @Override
     public String getReport() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "Number of edges in spanning tree: "
+                + this.edgesInST 
+                + "<br/> Weight of spanning tree: "
+                + this.STweight;
     }
-
+//<inner classes>
     private class DisjointSet {
 
         private int rank;
@@ -198,15 +259,25 @@ public class KruskalsAlgorithm extends SpanningTreeAlgorithm {
     }
 
     private class KNode {
-
+            
+        /*
+         * KNodes associate Nodes with a disjoint set, which is fundamental
+         * to Kruskal's Algorithm.
+         */
+        
         private ArrayList<KEdge> edges = new ArrayList<KEdge>();
         private String label = "";
         private DisjointSet djsPointer;
-
+        private Node node;
+        
+        KNode(Node n){
+      		this.node=n;
+		this.djsPointer = new DisjointSet();
+        }
         KNode() {
             this("", null);
         }
-
+        
         KNode(String label, DisjointSet djsPointer) {
             this.label = label;
             this.djsPointer = djsPointer;
@@ -227,39 +298,88 @@ public class KruskalsAlgorithm extends SpanningTreeAlgorithm {
         public DisjointSet getDjsPointer() {
             return djsPointer;
         }
+        public Node getNode(){
+            return this.node;
+        }
     }
 
     private class KEdge implements Comparable {
-
-        private KNode srcKNode;
-        private KNode destKNode;
-        private int weight;
-
-        KEdge(KNode srcKNode, KNode destKNode, int weight) {
-            this.srcKNode = srcKNode;
-            this.destKNode = destKNode;
+        /*
+         * This class is necessary because there needs to be a representation
+         * of edges with KNode source and targer nodes. See KNodes for why KNodes
+         * are necessary
+         */
+              
+        /* 
+         * This class needs access to a global, persistent 
+         * Hashmap<Integer, Knode> knodes
+         * 
+         * Comparable is implemented so that KEdge's can be sorted via PriorityQ
+         * 
+         * todo: stick to just 'destination' or just 'target', stop using them
+         * synonymously
+         */
+        
+        
+        private KNode srcNode; 
+        private KNode destNode; 
+        private double weight;  //create local copy of edge's weight
+        private Edge edge;      //maintain pointer to original edge
+        
+        KEdge(Edge e){
+                this.edge = e;
+                int srcID = e.getSource().getId();
+		if(kNodes.containsKey(srcID)){
+			this.srcNode = kNodes.get(srcID);
+		}
+		else{
+			this.srcNode = new KNode(e.getSource());
+			kNodes.put(srcID, this.srcNode);
+		}
+		
+		int targetID = e.getTarget().getId();
+		if(kNodes.containsKey(targetID)){
+			this.destNode = kNodes.get(targetID);
+		}
+		else{
+			this.destNode = new KNode(e.getTarget());
+			kNodes.put(targetID, this.destNode);
+		}
+            
+            this.weight = e.getWeight();
+        }
+        KEdge(KNode srcNode, KNode destNode, double weight) {
+            this.srcNode = srcNode;
+            this.destNode = destNode;
             this.weight = weight;
         }
 
-        KEdge(KNode srcKNode, KNode destKNode) {
-            this(srcKNode, destKNode, 1);
+        KEdge(KNode srcNode, KNode destNode) {
+            this(srcNode, destNode, 1);
         }
 
         public int compareTo(Object obj) {
             if (obj instanceof KEdge) {
                 KEdge otherKEdge = (KEdge) obj;
-                return this.weight - otherKEdge.weight;
+                double difference = this.weight - otherKEdge.weight;
+                if (0 < difference ){
+                    return 1;
+                }
+                else if(0 > difference){
+                    return -1;
+                }
+                else{
+                    return 0;
+                }
             } else {
-                System.out.println("Sorry, you supplied a non edge object");
-                return 0;
+                throw new IllegalArgumentException("a non KEdge object was supplied");             
             }
-
         }
 
         public String toString() {
-            return "[" + this.srcKNode.toString()
+            return "[" + this.srcNode.toString()
                     + "]<====" + this.weight
-                    + "====>[" + this.destKNode.toString()
+                    + "====>[" + this.destNode.toString()
                     + "]";
 
         }
@@ -267,33 +387,38 @@ public class KruskalsAlgorithm extends SpanningTreeAlgorithm {
          * <ACCESSORS AND MUTATORS>
          */
 
-        public void setSrcKNode(KNode srcKNode) {
-            this.srcKNode = srcKNode;
+        public void setSrcNode(KNode srcNode) {
+            this.srcNode = srcNode;
         }
 
-        public KNode getSrcKNode() {
-            return srcKNode;
+        public KNode getSrcNode() {
+            return srcNode;
         }
 
-        public void setDestKNode(KNode destKNode) {
-            this.destKNode = destKNode;
+        public void setDestNode(KNode destNode) {
+            this.destNode = destNode;
         }
 
-        public KNode getDestKNode() {
-            return destKNode;
+        public KNode getDestNode() {
+            return destNode;
         }
 
-        public int getWeight() {
+        public double getWeight() {
             return this.weight;
         }
 
-        public void setWeight(int weight) {
+        public void setWeight(double weight) {
             this.weight = weight;
+            
+        }
+        
+        public Edge getEdge(){
+            return this.edge;
         }
         /*
          * </ACCESSORS AND MUTATORS>
          */
-    }
+    }//end inner class
 
     private class KGraph {
 
@@ -326,5 +451,7 @@ public class KruskalsAlgorithm extends SpanningTreeAlgorithm {
         public void setEdges(ArrayList<KEdge> edges) {
             this.edges = edges;
         }
-    }//end private class
-}
+    }//end inner class
+    
+//</inner classes>
+}//outer class

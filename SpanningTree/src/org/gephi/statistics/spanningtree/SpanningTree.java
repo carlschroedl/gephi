@@ -67,17 +67,14 @@ public class SpanningTree implements Statistics, LongTask {
     /** ----------------------------------------------------------- */
 
     @Override
-    public String getReport() {
+    public String getReport() { //delegate
         //Write the report HTML string here
-        String report = "The result is 42. ;)";
-
-        return report;
+        return stAlgorithm.getReport();
     }
 
-    @Override
+    @Override   //delegate
     public boolean cancel() {
-        cancel = true;
-        return true;
+        return stAlgorithm.cancel();
     }
 
     @Override
