@@ -32,18 +32,16 @@ public class KruskalsAlgorithm extends SpanningTreeAlgorithm {
     private static final String name = "Kruskal's Algorithm";
     private ProgressTicket progressTicket;
     private boolean cancel;
-    private Graph graph;
     private HashMap<Integer, KNode> kNodes;
     private double STweight;    //spanning tree weight
     private int edgesInST;      //number of edges in spanning tree
     private static final String ST_COL_ID = "spanningtree";     //not displayed to user
     private static final String ST_COL_NAME = "Spanning Tree";  //displayed to user
     
-    //<required methods>
+    
     @Override
     public void execute(Graph graph, AttributeModel attributeModel) {
         //See http://wiki.gephi.org/index.php/HowTo_write_a_metric#Implementation_help
-        this.graph=graph;
         graph.writeLock();
         kNodes = new HashMap<Integer, KNode>();
         PriorityQueue<KEdge> edgeQ = new PriorityQueue();
@@ -52,23 +50,13 @@ public class KruskalsAlgorithm extends SpanningTreeAlgorithm {
         
         //<new attributes for the spanning tree>
         
-        //<nodes>
-        AttributeTable nodeTable = attributeModel.getNodeTable();
-        AttributeColumn stNodeCol = nodeTable.getColumn("spanningtree");
-
-        if (stNodeCol == null) {
-            stNodeCol = nodeTable.addColumn(ST_COL_ID, "ST_COL_NAME", AttributeType.INT, AttributeOrigin.COMPUTED, 0);
-
-        }
-        //</nodes>
-        //<edges>
         AttributeTable edgeTable = attributeModel.getEdgeTable();
-        AttributeColumn stEdgeCol = edgeTable.getColumn("spanningtree");
+        AttributeColumn stEdgeCol = edgeTable.getColumn(ST_COL_ID);
 
         if (stEdgeCol == null) {
-            stEdgeCol = edgeTable.addColumn(ST_COL_ID, "ST_COL_NAME", AttributeType.INT, AttributeOrigin.COMPUTED, 0);
+            stEdgeCol = edgeTable.addColumn(ST_COL_ID, ST_COL_NAME, AttributeType.INT, AttributeOrigin.COMPUTED, 0);
         }        
-        //</edges>
+        
         //</new attributes for the spanning tree>
         
         try {
@@ -93,26 +81,21 @@ public class KruskalsAlgorithm extends SpanningTreeAlgorithm {
                     //change edge's Spanning Tree Attribute to non-default value
                     tempKEdge.edge.getAttributes().setValue(ST_COL_ID, 1);
                     
-                    //change nodes' Spanning Tree Attribute to non-default value
-                    tempKEdge.destNode.node.getAttributes().setValue(ST_COL_ID, 1);
-                    tempKEdge.srcNode.node.getAttributes().setValue(ST_COL_ID, 1);
                     
                     ++edgesInST;
                     this.STweight+= tempKEdge.weight;
                     
-                    //todo: Unionize
+                   
                     Unionizer unionizer = new Unionizer();
                     unionizer.union(
                                     tempKEdge.getSrcNode().getDjsPointer(),
                                     tempKEdge.getDestNode().getDjsPointer()
                             );
                 }
-                
-                
+                            
                 Progress.progress(progressTicket, edgesInST);
                 if (cancel) {
-                    //remove the intermediate columns
-                    attributeModel.getNodeTable().removeColumn(stNodeCol);
+                    //remove the spanning tree column
                     attributeModel.getEdgeTable().removeColumn(stEdgeCol);
                     break;
                 }
@@ -160,7 +143,8 @@ public class KruskalsAlgorithm extends SpanningTreeAlgorithm {
                 + "<br/> Weight of spanning tree: "
                 + this.STweight;
     }
-//<inner classes>
+    
+  // <editor-fold defaultstate="collapsed" desc="Inner Helper Classes">
     private class DisjointSet {
 
         private int rank;
@@ -200,6 +184,7 @@ public class KruskalsAlgorithm extends SpanningTreeAlgorithm {
 
         /*
          * <ACCESSORS AND MUTATORS>
+         * <editor-fold defaultstate="collapsed" desc="ACCESSORS AND MUTATORS">
          */
         public void setRank(int rank) {
             this.rank = rank;
@@ -235,6 +220,7 @@ public class KruskalsAlgorithm extends SpanningTreeAlgorithm {
         public Object getValue() {
             return value;
         }
+        //</editor-fold>
     }//end private class
 
     private class Unionizer {
@@ -286,7 +272,7 @@ public class KruskalsAlgorithm extends SpanningTreeAlgorithm {
         public void addKEdge(KEdge e) {
             edges.add(e);
         }
-
+        @Override
         public String toString() {
             return this.label;
         }
@@ -357,11 +343,17 @@ public class KruskalsAlgorithm extends SpanningTreeAlgorithm {
         KEdge(KNode srcNode, KNode destNode) {
             this(srcNode, destNode, 1);
         }
-
+        
+        
         public int compareTo(Object obj) {
             if (obj instanceof KEdge) {
                 KEdge otherKEdge = (KEdge) obj;
                 double difference = this.weight - otherKEdge.weight;
+                /*
+                 * the method does not simply return 'difference' because the 
+                 * return type is int. Casting from double to int could result
+                 * in precision loss and incorrect sorting 
+                 */
                 if (0 < difference ){
                     return 1;
                 }
@@ -419,39 +411,5 @@ public class KruskalsAlgorithm extends SpanningTreeAlgorithm {
          * </ACCESSORS AND MUTATORS>
          */
     }//end inner class
-
-    private class KGraph {
-
-        ArrayList<KNode> nodes = new ArrayList<KNode>();
-        ArrayList<KEdge> edges = new ArrayList<KEdge>();
-
-        KGraph() {
-        }
-
-        public void addNode(KNode node) {
-            nodes.add(node);
-        }
-
-        public void addEdge(KEdge edge) {
-            edges.add(edge);
-        }
-
-        public ArrayList<KNode> getNodes() {
-            return this.nodes;
-        }
-
-        public ArrayList<KEdge> getEdges() {
-            return this.edges;
-        }
-
-        public void setNodes(ArrayList<KNode> nodes) {
-            this.nodes = nodes;
-        }
-
-        public void setEdges(ArrayList<KEdge> edges) {
-            this.edges = edges;
-        }
-    }//end inner class
-    
-//</inner classes>
+// </editor-fold>
 }//outer class
