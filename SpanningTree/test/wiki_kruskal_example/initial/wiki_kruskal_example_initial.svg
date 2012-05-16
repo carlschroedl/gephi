@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+    "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<svg contentScriptType="text/ecmascript" width="1597px"
+     xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify"
+     contentStyleType="text/css" viewBox="-861 -504 1299 684" height="841px"
+     preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
+     version="1.1">
+    <g id="edges">
+        <path fill="none" stroke-width="7.0"
+              d="M -803.790833,-468.904083 L -322.769379,-309.829803"
+              class="1 2" stroke-opacity="1.0" stroke="#999999"/>
+        <path fill="none" stroke-width="5.0"
+              d="M -803.790833,-468.904083 L -742.790161,-84.876083" class="1 4"
+              stroke-opacity="1.0" stroke="#999999"/>
+        <path fill="none" stroke-width="8.0"
+              d="M -322.769379,-309.829803 L 180.481369,-422.681732" class="2 3"
+              stroke-opacity="1.0" stroke="#999999"/>
+        <path fill="none" stroke-width="9.0"
+              d="M -322.769379,-309.829803 L -742.790161,-84.876083" class="2 4"
+              stroke-opacity="1.0" stroke="#999999"/>
+        <path fill="none" stroke-width="7.0"
+              d="M -322.769379,-309.829803 L -24.206144,-126.688309" class="2 5"
+              stroke-opacity="1.0" stroke="#999999"/>
+        <path fill="none" stroke-width="5.0"
+              d="M 180.481369,-422.681732 L -24.206144,-126.688309" class="3 5"
+              stroke-opacity="1.0" stroke="#999999"/>
+        <path fill="none" stroke-width="15.0"
+              d="M -742.790161,-84.876083 L -24.206144,-126.688309" class="4 5"
+              stroke-opacity="1.0" stroke="#999999"/>
+        <path fill="none" stroke-width="6.0"
+              d="M -742.790161,-84.876083 L -356.452728,55.374596" class="4 6"
+              stroke-opacity="1.0" stroke="#999999"/>
+        <path fill="none" stroke-width="8.0"
+              d="M -24.206144,-126.688309 L -356.452728,55.374596" class="5 6"
+              stroke-opacity="1.0" stroke="#999999"/>
+        <path fill="none" stroke-width="9.0"
+              d="M -24.206144,-126.688309 L 379.069214,145.169861" class="5 7"
+              stroke-opacity="1.0" stroke="#999999"/>
+        <path fill="none" stroke-width="11.0"
+              d="M -356.452728,55.374596 L 379.069214,145.169861" class="6 7"
+              stroke-opacity="1.0" stroke="#999999"/>
+    </g>
+    <g id="nodes">
+        <circle fill-opacity="1.0" fill="#999999" r="10.0" cx="-803.79083"
+                class="1" cy="-468.90408" stroke="#bababa" stroke-opacity="1.0"
+                stroke-width="3.0"/>
+        <circle fill-opacity="1.0" fill="#999999" r="10.0" cx="-322.76938"
+                class="2" cy="-309.8298" stroke="#bababa" stroke-opacity="1.0"
+                stroke-width="3.0"/>
+        <circle fill-opacity="1.0" fill="#999999" r="10.0" cx="180.48137"
+                class="3" cy="-422.68173" stroke="#bababa" stroke-opacity="1.0"
+                stroke-width="3.0"/>
+        <circle fill-opacity="1.0" fill="#999999" r="10.0" cx="-742.79016"
+                class="4" cy="-84.87608" stroke="#bababa" stroke-opacity="1.0"
+                stroke-width="3.0"/>
+        <circle fill-opacity="1.0" fill="#999999" r="10.0" cx="-24.206144"
+                class="5" cy="-126.68831" stroke="#bababa" stroke-opacity="1.0"
+                stroke-width="3.0"/>
+        <circle fill-opacity="1.0" fill="#999999" r="10.0" cx="-356.45273"
+                class="6" cy="55.374596" stroke="#bababa" stroke-opacity="1.0"
+                stroke-width="3.0"/>
+        <circle fill-opacity="1.0" fill="#999999" r="10.0" cx="379.0692"
+                class="7" cy="145.16986" stroke="#bababa" stroke-opacity="1.0"
+                stroke-width="3.0"/>
+    </g>
+    <g id="node-labels">
+        <text font-size="24" x="-803.79083" y="-464.60916" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Arial" class="1">
+            A
+        </text>
+        <text font-size="24" x="-322.76938" y="-305.53488" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Arial" class="2">
+            B
+        </text>
+        <text font-size="24" x="180.48137" y="-418.23837" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Arial" class="3">
+            C
+        </text>
+        <text font-size="24" x="-742.79016" y="-80.58116" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Arial" class="4">
+            D
+        </text>
+        <text font-size="24" x="-24.206144" y="-122.39339" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Arial" class="5">
+            E
+        </text>
+        <text font-size="24" x="-356.45273" y="59.669518" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Arial" class="6">
+            F
+        </text>
+        <text font-size="24" x="379.0692" y="149.61322" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Arial" class="7">
+            G
+        </text>
+    </g>
+    <g id="edge-labels">
+        <text font-size="24" x="-563.2801" y="-389.36694" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Arial" class="7">
+            7.0
+        </text>
+        <text font-size="24" x="-773.2905" y="-276.89008" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Arial" class="8">
+            5.0
+        </text>
+        <text font-size="24" x="-71.144005" y="-366.25577" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Arial" class="9">
+            8.0
+        </text>
+        <text font-size="24" x="-532.7798" y="-197.35294" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Arial" class="10">
+            9.0
+        </text>
+        <text font-size="24" x="-173.48776" y="-218.25906" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Arial" class="11">
+            7.0
+        </text>
+        <text font-size="24" x="78.13761" y="-274.68503" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Arial" class="12">
+            5.0
+        </text>
+        <text font-size="24" x="-383.49814" y="-105.782196" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Arial" class="13">
+            15.0
+        </text>
+        <text font-size="24" x="-549.62146" y="-14.750744" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Arial" class="14">
+            6.0
+        </text>
+        <text font-size="24" x="-190.32944" y="-35.656857" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Arial" class="15">
+            8.0
+        </text>
+        <text font-size="24" x="177.43153" y="9.240776" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Arial" class="16">
+            9.0
+        </text>
+        <text font-size="24" x="11.308243" y="100.27223" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Arial" class="17">
+            11.0
+        </text>
+    </g>
+</svg>
